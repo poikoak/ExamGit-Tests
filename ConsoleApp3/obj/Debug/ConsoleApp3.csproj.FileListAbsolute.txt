@@ -12,3 +12,10 @@ e:\ConsoleApp1\ConsoleApp3\obj\Debug\ConsoleApp3.pdb
 e:\ConsoleApp1\ConsoleApp3\bin\Debug\ConsoleApp3.exe.config
 e:\ConsoleApp1\ConsoleApp3\bin\Debug\ConsoleApp3.exe
 e:\ConsoleApp1\ConsoleApp3\bin\Debug\ConsoleApp3.pdb
+c:\22\ConsoleApp1\ConsoleApp3\bin\Debug\ConsoleApp3.exe.config
+c:\22\ConsoleApp1\ConsoleApp3\bin\Debug\ConsoleApp3.exe
+c:\22\ConsoleApp1\ConsoleApp3\bin\Debug\ConsoleApp3.pdb
+c:\22\ConsoleApp1\ConsoleApp3\obj\Debug\ConsoleApp3.csproj.AssemblyReference.cache
+c:\22\ConsoleApp1\ConsoleApp3\obj\Debug\ConsoleApp3.csproj.CoreCompileInputs.cache
+c:\22\ConsoleApp1\ConsoleApp3\obj\Debug\ConsoleApp3.exe
+c:\22\ConsoleApp1\ConsoleApp3\obj\Debug\ConsoleApp3.pdb
