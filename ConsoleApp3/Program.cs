@@ -11,99 +11,60 @@ namespace ConsoleApp3
 {
     class Program
     {
+
+        public static void CountWordsInFile(string file, Dictionary<string, int> words)
+        {
+            var content = File.ReadAllText(file);           
+            var wordPattern = new Regex(@"\w+");
+            StreamWriter writer = new StreamWriter("1.txt", true);
+            foreach (Match match in wordPattern.Matches(content))
+            {
+                words.TryGetValue(match.Value, out int currentCount);
+                currentCount++;
+                words[match.Value] = currentCount;
+            }
+            foreach (Match match in wordPattern.Matches(content))
+            {
+                writer.WriteLine("{0}", match.Value);
+            }
+            writer.Close();
+        }
       
-        readonly List<string> lst = new List<string>();
         public void ShowAllFiles(string path, string mask)
         {
             DirectoryInfo dinfo = new DirectoryInfo(path);
-   
-                if (dinfo.Exists)
+            if (dinfo.Exists)
+            {
+                // Получить массив файлов в текущей папке
+                try
                 {
-                    // Получить массив файлов в текущей папке
-                    try
-                    {
                     string[] files = Directory.GetFiles(path, mask);
-                     
-                   // Console.WriteLine("Всего файлов {0}.", files.Length);
-                   
-                        foreach (string f in files)
-                        {
-                        CountWordFrequencySimple(f);
-                        }
+                    Console.WriteLine("Всего файлов {0}.", files.Length);
+                    foreach (string f in files)
+                    {                        
+                        var words = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
+                        //сортируем слова в 1 фаил
+                        CountWordsInFile(f, words);
+                    }
                     // Получить массив подпапок в текущей папке
                     DirectoryInfo[] dirs = dinfo.GetDirectories();
                     foreach (DirectoryInfo current in dirs)
                     {
-                       // Console.WriteLine("<DIR>    " + path + "\\" + current.Name);
+                        // Console.WriteLine("<DIR>    " + path + "\\" + current.Name);
                         ShowAllFiles(path + @"\" + current.Name, mask);
                     }
                 }
                 catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                else
                 {
-                    Console.WriteLine("Path is not exists");
+                    Console.WriteLine(ex.Message);
                 }
+            }
+            else
+            {
+                Console.WriteLine("Path is not exists");
+            }
         }
 
-
-        public void CountWordFrequencySimple(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName))
-            {
-                throw new ArgumentNullException("fileName", "You must specify a file");
-            }
-
-            if (!File.Exists(fileName))
-            {
-                throw new FileNotFoundException("Could not find the specified file.", fileName);
-            }
-
-            Dictionary<string, int> wordCounts = new Dictionary<string, int>();
-            string pattern = @"[^a-zA-Z0-9'\- ]";
-
-
-            using (TextReader reader = File.OpenText(fileName))
-            {
-                string line = reader.ReadLine();
-                while (line != null)
-                {
-                    string cleanedLine =line;
-                    string[] words = cleanedLine.Split(' ');
-                    foreach (string word in words)
-                    {
-
-                        if (!string.IsNullOrEmpty(word))
-                        {
-                            int frequency = 1;
-                            if (wordCounts.ContainsKey(word))
-                            {
-                                frequency = wordCounts[word] + 1;
-                            }
-                            wordCounts[word] = frequency;
-                        }
-                    }
-
-                    line = reader.ReadLine();
-                }
-               /* StreamWriter writer = new StreamWriter("FirstFile.txt", true);*/
-                List<KeyValuePair<string, int>> pairList = new List<KeyValuePair<string, int>>(wordCounts);
-                pairList.Sort((first, second) => { return second.Value.CompareTo(first.Value); });
-                foreach (KeyValuePair<string, int> pair in pairList)
-                { 
-                  /*  Console.WriteLine("{0}, {1}", pair.Key, pair.Value);*/
-                    lst.Add(pair.Key);
-
-                    /* writer.WriteLine(lst);*/
-                    File.WriteAllLines("FirstFile.txt", lst);
-
-                }
-                /* writer.Close();*/
-            }
-        }
 
         public static void CountWordFrequencySimpleDimple(string fileName)
         {
@@ -118,8 +79,6 @@ namespace ConsoleApp3
             }
 
             Dictionary<string, int> wordCounts = new Dictionary<string, int>();
-            string pattern = @"[^a-zA-Z0-9'\- ]";
-
 
             using (TextReader reader = File.OpenText(fileName))
             {
@@ -144,29 +103,23 @@ namespace ConsoleApp3
 
                     line = reader.ReadLine();
                 }
-                 StreamWriter writer = new StreamWriter("1.txt", true);
+                StreamWriter writer = new StreamWriter("2.txt", true);
                 List<KeyValuePair<string, int>> pairList = new List<KeyValuePair<string, int>>(wordCounts);
                 pairList.Sort((first, second) => { return second.Value.CompareTo(first.Value); });
                 foreach (KeyValuePair<string, int> pair in pairList)
                 {
                     Console.WriteLine("{0}, {1}", pair.Key, pair.Value);
-                   /* lst.Add(pair.Key);*/
-
-                     writer.WriteLine("{0}, {1}", pair.Key, pair.Value);
-                    /*File.WriteAllLines("FirstFile.txt", lst);*/
-
+                    writer.WriteLine("{0}, {1}", pair.Key, pair.Value);
                 }
-                 writer.Close();
+                writer.Close();
             }
         }
         public static void Main()
         {
-           
             string mask = (@"*.txt");
             Program p = new Program();
             p.ShowAllFiles(@"e:\2", mask);
-            CountWordFrequencySimpleDimple("FirstFile.txt");
-
+            CountWordFrequencySimpleDimple("1.txt");
         }
     }
 
